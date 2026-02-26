@@ -1,0 +1,108 @@
+:root {
+  --bg: #303030;
+  --card: #363636;
+  --border: #404040;
+  --teal: #1abc9c;
+  --text: #f2f2f2;
+  --muted: #a5a5a5;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Segoe UI", "Roboto", sans-serif;
+  display: flex;
+  justify-content: center;
+  padding: 24px;
+}
+
+.panel {
+  width: 100%;
+  max-width: 520px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+h1 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.toggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.95rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.9rem;
+}
+
+.input-row {
+  display: flex;
+  gap: 8px;
+}
+
+.input-row input[type="text"] {
+  flex: 1;
+}
+
+input[type="text"] {
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: #1f1f1f;
+  color: var(--text);
+}
+
+.hint {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.btn {
+  background: #3a3a3a;
+  color: var(--text);
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.btn.primary {
+  background: var(--teal);
+  font-weight: 600;
+}
+
+.status {
+  font-size: 0.85rem;
+  color: var(--muted);
+}

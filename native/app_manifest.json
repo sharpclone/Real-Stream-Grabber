@@ -1,0 +1,7 @@
+{
+  "name": "com.realstreamgrabber.mediagrabber",
+  "description": "Native host that relays download requests to yt-dlp.",
+  "path": "/home/mihu/Nextcloud/Libraries/Workspace/Projects/Real Stream Grabber/native/host.py",
+  "type": "stdio",
+  "allowed_extensions": ["cazacmihaihack@gmail.com"]
+}

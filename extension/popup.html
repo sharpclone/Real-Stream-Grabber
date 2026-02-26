@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Real Stream Grabber</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <div class="header-text">
+        <p class="title">Media Grabber</p>
+        <p class="subtitle">Detected streams in the active tab</p>
+      </div>
+      <button id="open-settings" class="settings-btn" title="Settings" aria-label="Settings">
+        <img src="cog.svg" alt="" class="settings-icon" />
+      </button>
+    </header>
+    <section class="settings-row">
+      <label class="toggle">
+        <input type="checkbox" id="use-cookies" />
+        <span>Use Firefox cookies for downloads</span>
+      </label>
+      <label class="toggle">
+        <input type="checkbox" id="ask-filename" />
+        <span>Prompt for filename before download</span>
+      </label>
+      <div id="youtube-actions" class="youtube-actions hidden">
+        <p class="youtube-title">YouTube quick download</p>
+        <p id="youtube-warning" class="youtube-warning hidden"></p>
+        <div class="youtube-buttons">
+          <div class="youtube-video-group">
+            <button id="youtube-video" class="download-btn">Video</button>
+            <select id="youtube-resolution" class="youtube-select">
+              <option value="max">Max</option>
+              <option value="2160">≤2160p (4K)</option>
+              <option value="1440">≤1440p</option>
+              <option value="1080" selected>≤1080p</option>
+              <option value="720">≤720p</option>
+              <option value="480">≤480p</option>
+              <option value="360">≤360p</option>
+            </select>
+          </div>
+          <button id="youtube-audio" class="download-btn secondary">Audio only</button>
+        </div>
+        <div id="youtube-playlist-options" class="playlist-options hidden">
+          <label class="toggle">
+            <input type="checkbox" id="youtube-playlist-toggle" />
+            <span>Download playlist</span>
+          </label>
+          <label class="playlist-limit">
+            <span>Max items</span>
+            <input
+              type="number"
+              id="youtube-playlist-max"
+              min="1"
+              placeholder="All"
+              disabled
+            />
+          </label>
+        </div>
+      </div>
+    </section>
+    <main>
+      <div id="sort-bar" class="sort-bar">
+        <span class="sort-label">Sort:</span>
+        <button class="sort-btn" data-sort="name">Name</button>
+        <button class="sort-btn" data-sort="size">Size</button>
+        <button class="sort-btn" data-sort="duration">Duration</button>
+      </div>
+      <div id="resolution-filter-bar" class="resolution-filter-bar">
+        <span class="sort-label">Resolution:</span>
+        <button class="resolution-filter-btn active" data-resolution="all">All</button>
+        <button class="resolution-filter-btn" data-resolution="240">240p</button>
+        <button class="resolution-filter-btn" data-resolution="360">360p</button>
+        <button class="resolution-filter-btn" data-resolution="480">480p</button>
+        <button class="resolution-filter-btn" data-resolution="720">720p</button>
+        <button class="resolution-filter-btn" data-resolution="1080">1080p</button>
+      </div>
+      <div id="stream-list" class="stream-list">
+        <p class="empty-state">Listening for media on the current tab…</p>
+      </div>
+    </main>
+    <div id="modal-overlay" class="modal-overlay hidden">
+      <div class="modal">
+        <p id="modal-title" class="modal-title"></p>
+        <p id="modal-message" class="modal-message"></p>
+        <input id="modal-input" class="modal-input" type="text" />
+        <div id="modal-actions" class="modal-actions"></div>
+      </div>
+    </div>
+    <script src="popup.js"></script>
+  </body>
+</html>
