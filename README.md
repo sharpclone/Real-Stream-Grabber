@@ -37,7 +37,7 @@ sudo curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o
 sudo chmod a+rx /usr/local/bin/yt-dlp
 ```
 
-2. Clone this repo (needed for `native/host.py`) and register native messaging ([repo link](https://github.com/sharpclone/Real-Stream-Grabber)):
+2. [Clone](https://github.com/sharpclone/Real-Stream-Grabber) this repo (needed for `native/host.py`) and register native messaging:
 
 ```bash
 ./setup/scripts/install-linux-native-host.sh
@@ -50,7 +50,7 @@ sudo chmod a+rx /usr/local/bin/yt-dlp
 
 Use the PowerShell script from this repo.
 
-1. Download this repo ZIP: [Real-Stream-Grabber main.zip](https://github.com/sharpclone/Real-Stream-Grabber/archive/refs/heads/main.zip).
+1. [Download](https://github.com/sharpclone/Real-Stream-Grabber/archive/refs/heads/main.zip) this repo ZIP.
 2. Open PowerShell as Administrator in the repo root.
 3. Run:
 
