@@ -5,6 +5,7 @@ Param(
 )
 
 $ErrorActionPreference = 'Stop'
+$ProgressPreference = 'SilentlyContinue'
 
 $logDir = Join-Path $env:LOCALAPPDATA 'RealStreamGrabber'
 if (-not (Test-Path $logDir)) {
@@ -27,6 +28,25 @@ function Ensure-Dir($path) {
   if (-not (Test-Path $path)) {
     New-Item -ItemType Directory -Path $path | Out-Null
   }
+}
+
+function Download-File {
+  Param(
+    [string]$Url,
+    [string]$OutFile
+  )
+
+  $bits = Get-Command Start-BitsTransfer -ErrorAction SilentlyContinue
+  if ($bits) {
+    try {
+      Start-BitsTransfer -Source $Url -Destination $OutFile -ErrorAction Stop
+      return
+    } catch {
+      Write-Log "BITS download failed, falling back to Invoke-WebRequest: $($_.Exception.Message)"
+    }
+  }
+
+  Invoke-WebRequest -Uri $Url -OutFile $OutFile
 }
 
 function Resolve-ExistingCommand {
@@ -90,7 +110,7 @@ function Install-PythonPortable($version) {
   if (-not (Test-Path $zipPath)) {
     $url = "https://www.python.org/ftp/python/$version/$zipName"
     Write-Log "Downloading Python $version (embedded) from $url"
-    Invoke-WebRequest -Uri $url -OutFile $tmpZip
+    Download-File -Url $url -OutFile $tmpZip
     $zipPath = $tmpZip
   } else {
     Write-Log "Using bundled Python zip at $localZip"
@@ -131,7 +151,7 @@ function Install-NodePortable($version) {
   if (-not (Test-Path $zipPath)) {
     $url = "https://nodejs.org/dist/v$version/$zipName"
     Write-Log "Downloading Node.js $version (portable) from $url"
-    Invoke-WebRequest -Uri $url -OutFile $tmpZip
+    Download-File -Url $url -OutFile $tmpZip
     $zipPath = $tmpZip
   } else {
     Write-Log "Using bundled Node.js zip at $localZip"
@@ -183,7 +203,7 @@ function Install-YtDlp($targetDir) {
 
   $url = 'https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp.exe'
   Write-Log "Downloading yt-dlp from $url"
-  Invoke-WebRequest -Uri $url -OutFile $ytPath
+  Download-File -Url $url -OutFile $ytPath
   Write-Log "yt-dlp installed at $ytPath"
   return $ytPath
 }
@@ -210,7 +230,7 @@ function Install-Ffmpeg() {
   if (-not (Test-Path $zipPath)) {
     $url = 'https://github.com/BtbN/FFmpeg-Builds/releases/latest/download/ffmpeg-master-latest-win64-gpl-shared.zip'
     Write-Log "Downloading ffmpeg from $url"
-    Invoke-WebRequest -Uri $url -OutFile $tmpZip
+    Download-File -Url $url -OutFile $tmpZip
     $zipPath = $tmpZip
   } else {
     Write-Log "Using bundled ffmpeg zip at $localZip"
