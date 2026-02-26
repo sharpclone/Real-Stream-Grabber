@@ -4,6 +4,9 @@ There are a lot of extensions out there that download media from sites, but I fo
 
 PS: On Windows it can still feel slower than on Linux in some cases. If you profile and find a clear bottleneck, please open an issue.
 
+<img width="1474" height="497" alt="image" src="https://github.com/user-attachments/assets/81741b6b-7c4a-4dcf-a26d-a14da1f73c74" />
+<img width="1781" height="834" alt="image" src="https://github.com/user-attachments/assets/2716c25a-09fd-4727-922d-2c1839920051" />
+
 ## Features
 
 - Detects media requests in the active tab (`m3u8`, `mp4`, `mp3`, `mkv`, `vtt`)
