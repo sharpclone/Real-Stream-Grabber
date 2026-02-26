@@ -2,7 +2,7 @@ Real Stream Grabber - Windows Installer (Inno Setup)
 
 This folder contains an Inno Setup script and helper PowerShell scripts that:
 - Check Firefox is installed.
-- Download portable Python/Node into the app folder (or use bundled zips if provided), and yt-dlp.exe.
+- Download portable Python/Node/ffmpeg into the app folder (or use bundled zips if provided), and yt-dlp.exe.
 - Register the native messaging host.
 - Optionally install a Firefox policy to force-install the extension.
 - Create a daily yt-dlp update scheduled task (mandatory).

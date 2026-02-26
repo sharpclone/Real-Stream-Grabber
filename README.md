@@ -1,10 +1,8 @@
 # Real Stream Grabber
 
+There are a lot of extensions out there that download media from sites, but I found that most of them do not achieve what I want from a real media downloader. I was inspired by the Android app 1DM+, which could download almost everything. I tried to reproduce that workflow with this add-on.
 
-There are a lot of extensions out there that download media from sites, but i found that all of them do not achieve what i want from a real media downloader. I insired myself from the legendary android app 1dm+, which could download absolutely everything - no other app has achieved its downloading capabilities. I tried to reproduce its functionality with this addon. Hope you find it useful.
-
-PS: On windows it seems that the extension is way slower as on linux. I cant figure out what causes that. Maybe you could help!
-
+PS: On Windows it can still feel slower than on Linux in some cases. If you profile and find a clear bottleneck, please open an issue.
 
 ## Features
 
@@ -15,17 +13,14 @@ PS: On windows it seems that the extension is way slower as on linux. I cant fig
 - Progress, queue/cancel support, and download status in popup
 - Windows installer (Inno Setup) with dependency provisioning
 
-## Repository Layout
 
-- `extension/` - Firefox extension source (popup/background/options + manifest)
-- `native/` - Native host (`host.py`, `host.cmd`, native manifest template)
-- `setup/` - Windows installer scripts/assets and build outputs
-
-## Local Development
+## Easy Install - Firefox only
 
 ### Linux
 
-1. Install dependencies:
+1. Install runtime dependencies:
+
+Debian / Ubuntu:
 
 ```bash
 sudo apt update
@@ -34,18 +29,76 @@ sudo curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o
 sudo chmod a+rx /usr/local/bin/yt-dlp
 ```
 
-2. Register native host:
+Fedora:
+
+```bash
+sudo dnf install -y python3 nodejs ffmpeg zip 
+sudo curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o /usr/local/bin/yt-dlp
+sudo chmod a+rx /usr/local/bin/yt-dlp
+```
+
+2. Clone this repo (needed for `native/host.py`) and register native messaging ([repo link](https://github.com/sharpclone/Real-Stream-Grabber)):
 
 ```bash
 ./setup/scripts/install-linux-native-host.sh
 ```
 
-3. Load extension temporarily in Firefox (`about:debugging` -> This Firefox -> Load Temporary Add-on -> `extension/manifest.json`), or install signed XPI.
+3. Install the signed `.xpi` from [GitHub Releases](https://github.com/sharpclone/Real-Stream-Grabber/releases) in Firefox.
+4. Restart Firefox.
 
 ### Windows
 
-- Use the Inno Setup installer from `setup/build/RealStreamGrabber-Setup.exe`, or compile `setup/installer.iss`.
-- Installer scripts are in `setup/scripts/`.
+Use the PowerShell script from this repo.
+
+1. Download this repo: [Real-Stream-Grabber](https://github.com/sharpclone/Real-Stream-Grabber).
+2. Open PowerShell as Administrator in the repo root.
+3. Run:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\setup\scripts\install-windows-native-host.ps1
+```
+
+What this script does:
+- Checks if Python, Node.js, yt-dlp, and ffmpeg already exist on `PATH`.
+- Downloads only missing dependencies.
+- Copies native host files to `C:\Program Files\RealStreamGrabber`.
+- Adds local dependency folders to machine `PATH` when needed.
+- Writes/registers the Firefox native host manifest.
+
+4. Install the signed `.xpi` from [GitHub Releases](https://github.com/sharpclone/Real-Stream-Grabber/releases).
+5. Restart Firefox.
+
+## Uninstall
+
+### Windows
+
+1. Open PowerShell as Administrator in the repo root.
+2. Run:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\setup\scripts\uninstall-windows-native-host.ps1
+```
+
+This removes native host registration, manifest, install folder (`C:\Program Files\RealStreamGrabber`), and cleans legacy policy entries from older installer-based setups.
+
+3. Remove the extension from Firefox at `about:addons`.
+
+### Linux
+
+1. In the repo root, run:
+
+```bash
+./setup/scripts/uninstall-linux-native-host.sh
+```
+
+2. Remove the extension from Firefox at `about:addons`.
+
+## Repository Layout
+
+- `extension/` - Firefox extension source (popup/background/options + manifest)
+- `native/` - Native host (`host.py`, `host.cmd`, native manifest template)
+- `setup/` - Windows installer scripts/assets and build outputs
+
 
 ## Build XPI
 
@@ -54,7 +107,16 @@ cd extension
 zip -r ../setup/build/realstreamgrabber.xpi .
 ```
 
+## Build Windows Installer (optional)
 
+- Build extension XPI first:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\setup\scripts\build-extension.ps1
+```
+
+- Compile `setup/installer.iss` with Inno Setup.
+- Output installer is generated in `setup/build/`.
 
 ## Notes
 

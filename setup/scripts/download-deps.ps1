@@ -29,12 +29,52 @@ function Ensure-Dir($path) {
   }
 }
 
+function Resolve-ExistingCommand {
+  Param(
+    [string]$Name,
+    [string[]]$VersionArgs = @('--version')
+  )
+
+  $cmd = Get-Command $Name -ErrorAction SilentlyContinue | Select-Object -First 1
+  if (-not $cmd) {
+    return $null
+  }
+
+  $candidate = $cmd.Source
+  if (-not $candidate) {
+    $candidate = $cmd.Path
+  }
+  if (-not $candidate) {
+    return $null
+  }
+
+  try {
+    & $candidate @VersionArgs *> $null
+    if ($LASTEXITCODE -eq 0 -or $null -eq $LASTEXITCODE) {
+      return $candidate
+    }
+  } catch {
+    return $null
+  }
+
+  return $null
+}
+
 $binDir = Join-Path $InstallDir 'bin'
 $assetDir = Join-Path $InstallDir 'assets'
 Ensure-Dir $binDir
 Ensure-Dir $assetDir
 
 function Install-PythonPortable($version) {
+  $systemPython = Resolve-ExistingCommand -Name 'python'
+  if (-not $systemPython) {
+    $systemPython = Resolve-ExistingCommand -Name 'py' -VersionArgs @('-3', '--version')
+  }
+  if ($systemPython) {
+    Write-Log "Python already available on PATH at $systemPython"
+    return $systemPython
+  }
+
   $pythonDir = Join-Path $binDir 'python'
   $pythonExe = Join-Path $pythonDir 'python.exe'
   if (Test-Path $pythonExe) {
@@ -70,6 +110,12 @@ function Install-PythonPortable($version) {
 }
 
 function Install-NodePortable($version) {
+  $systemNode = Resolve-ExistingCommand -Name 'node'
+  if ($systemNode) {
+    Write-Log "Node.js already available on PATH at $systemNode"
+    return $systemNode
+  }
+
   $nodeDir = Join-Path $binDir 'node'
   $nodeExe = Join-Path $nodeDir 'node.exe'
   if (Test-Path $nodeExe) {
@@ -120,6 +166,12 @@ function Install-NodePortable($version) {
 }
 
 function Install-YtDlp($targetDir) {
+  $systemYtdlp = Resolve-ExistingCommand -Name 'yt-dlp'
+  if ($systemYtdlp) {
+    Write-Log "yt-dlp already available on PATH at $systemYtdlp"
+    return $systemYtdlp
+  }
+
   $targetBin = Join-Path $targetDir 'bin'
   Ensure-Dir $targetBin
 
@@ -137,6 +189,12 @@ function Install-YtDlp($targetDir) {
 }
 
 function Install-Ffmpeg() {
+  $systemFfmpeg = Resolve-ExistingCommand -Name 'ffmpeg'
+  if ($systemFfmpeg) {
+    Write-Log "ffmpeg already available on PATH at $systemFfmpeg"
+    return $systemFfmpeg
+  }
+
   $ffmpegDir = Join-Path $binDir 'ffmpeg'
   $ffmpegExe = Join-Path $ffmpegDir 'ffmpeg.exe'
   if (Test-Path $ffmpegExe) {
@@ -144,13 +202,13 @@ function Install-Ffmpeg() {
     return $ffmpegDir
   }
 
-  $zipName = 'ffmpeg-release-essentials.zip'
+  $zipName = 'ffmpeg-master-latest-win64-gpl-shared.zip'
   $localZip = Join-Path $assetDir $zipName
   $tmpZip = Join-Path $env:TEMP $zipName
   $zipPath = $localZip
 
   if (-not (Test-Path $zipPath)) {
-    $url = 'https://www.gyan.dev/ffmpeg/builds/ffmpeg-release-essentials.zip'
+    $url = 'https://github.com/BtbN/FFmpeg-Builds/releases/latest/download/ffmpeg-master-latest-win64-gpl-shared.zip'
     Write-Log "Downloading ffmpeg from $url"
     Invoke-WebRequest -Uri $url -OutFile $tmpZip
     $zipPath = $tmpZip
