@@ -3,10 +3,15 @@
 There are a lot of extensions out there that download media from sites, but I found that most of them do not achieve what I want from a real media downloader. I was inspired by the Android app 1DM+, which could download almost everything. I tried to reproduce that workflow with this add-on.
 
 PS: On Windows it can still feel slower than on Linux in some cases. If you profile and find a clear bottleneck, please open an issue.
-#Screenshots
-##Random Website
+
+# Screenshots
+
+## Random Website
+
 <img width="1474" height="497" alt="image" src="https://github.com/user-attachments/assets/81741b6b-7c4a-4dcf-a26d-a14da1f73c74" />
-##Special interface for youtube
+
+## Special interface for youtube
+
 <img width="1781" height="834" alt="image" src="https://github.com/user-attachments/assets/2716c25a-09fd-4727-922d-2c1839920051" />
 
 ## Features
