@@ -50,7 +50,7 @@ sudo chmod a+rx /usr/local/bin/yt-dlp
 
 Use the PowerShell script from this repo.
 
-1. Download this repo: [Real-Stream-Grabber](https://github.com/sharpclone/Real-Stream-Grabber).
+1. Download this repo ZIP: [Real-Stream-Grabber main.zip](https://github.com/sharpclone/Real-Stream-Grabber/archive/refs/heads/main.zip).
 2. Open PowerShell as Administrator in the repo root.
 3. Run:
 
